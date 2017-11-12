@@ -11,14 +11,26 @@
 // });
 $(document).ready(function(){
   $("#button1").click( function(){
-    getreq("https://btc-trade.com.ua/api/deals/btc_uah");
-  });
+    $("#trades-list").empty();
+    var tradesObj;
+    var trades = getreq("https://btc-trade.com.ua/api/deals/btc_uah");
+    if(trades!=null) {
+      tradesObj = JSON.parse(trades);
+      $("#trades-list").append($("<li class='list-group-item'></li>").text(tradesObj));
+    }
+    else 
+      $("#trades-list").append($("<li class='list-group-item'></li>").text("Error!"));
+      // tradesObj = "Error!";
+    });
 });
 function getreq(theUrl) {
   var xmlHttp = new XMLHttpRequest();
   xmlHttp.onreadystatechange = function() { 
       if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-        $("#demo").text(xmlHttp.responseText);
+        // $("#trades-list").text(xmlHttp.responseText);
+        return xmlHttp.responseText;
+      else
+        return null;
   }
   xmlHttp.open("GET", theUrl, true); // true for asynchronous 
   xmlHttp.send(null);
