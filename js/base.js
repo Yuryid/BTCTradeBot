@@ -12,25 +12,36 @@
 $(document).ready(function(){
   $("#button1").click( function(){
     $("#trades-list").empty();
-    var tradesObj;
-    var trades = getreq("https://btc-trade.com.ua/api/deals/btc_uah");
-    if(trades!=null) {
-      tradesObj = JSON.parse(trades);
-      $("#trades-list").append($("<li class='list-group-item'></li>").text(tradesObj));
-    }
-    else 
-      $("#trades-list").append($("<li class='list-group-item'></li>").text("Error!"));
+    var trades = "Wait...", 
+        tradesObj;
+    $("#trades-list").append($("<li class='list-group-item'></li>").text("Wait..."));
+    getreq("https://btc-trade.com.ua/api/deals/btc_uah");
+    //if(trades!=null) {
+      //tradesObj = JSON.parse(trades);
+     
+    //}
+    //else 
+     // $("#trades-list").append($("<li class='list-group-item'></li>").text("Error!"));
       // tradesObj = "Error!";
     });
 });
 function getreq(theUrl) {
   var xmlHttp = new XMLHttpRequest();
   xmlHttp.onreadystatechange = function() { 
-      if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-        // $("#trades-list").text(xmlHttp.responseText);
-        return xmlHttp.responseText;
-      else
-        return null;
+      if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+        $("#trades-list").empty();
+        $("#trades-list").append($("<li class='list-group-item'></li>").text(JSON.parse(xmlHttp.responseText)));
+        //ret = xmlHttp.responseText;
+      }
+      
+      if (xmlHttp.readyState == 4 && xmlHttp.status == 502) {
+        $("#trades-list").empty();
+        $("#trades-list").append($("<li class='list-group-item'></li>").text("Bad Gateway"));
+      }
+      //$("#trades-list").append($("<li class='list-group-item'></li>").text(xmlHttp.responseText));
+        //return xmlHttp.responseText;
+      // else
+      //   return null;
   }
   xmlHttp.open("GET", theUrl, true); // true for asynchronous 
   xmlHttp.send(null);
