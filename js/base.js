@@ -1,14 +1,6 @@
 // в цьому файлі описані скрипти
 //
-//get request
-// $(document).ready(function(){
-//     $("#button1").click( function(){
-//         $.get("https://btc-trade.com.ua/api/deals/btc_uah", function(data, status){
-//           // $("#demo").text("ok");
-//           alert("Data: " + data + "\nStatus: " + status);
-//          });
-//     });
-// });
+
 $(document).ready(function(){
   $("#button1").click( function(){
     $("#trades-list").empty();
@@ -16,32 +8,27 @@ $(document).ready(function(){
         tradesObj;
     $("#trades-list").append($("<li class='list-group-item'></li>").text("Wait..."));
     getreq("https://btc-trade.com.ua/api/deals/btc_uah");
-    //if(trades!=null) {
-      //tradesObj = JSON.parse(trades);
-     
-    //}
-    //else 
-     // $("#trades-list").append($("<li class='list-group-item'></li>").text("Error!"));
-      // tradesObj = "Error!";
-    });
+  });
 });
 function getreq(theUrl) {
   var xmlHttp = new XMLHttpRequest();
-  xmlHttp.onreadystatechange = function() { 
-      if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+  xmlHttp.onreadystatechange = function() {
+    /*success request status ok*/
+    if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+      if(xmlHttp.responseText!=null) {
+        var trades = "Wait...", 
+            tradesObj;
+        trades = JSON.parse(xmlHttp.responseText);
         $("#trades-list").empty();
-        $("#trades-list").append($("<li class='list-group-item'></li>").text(JSON.parse(xmlHttp.responseText)));
-        //ret = xmlHttp.responseText;
+
+        $("#trades-list").append($("<li class='list-group-item'></li>").text(trades[0].user));
       }
-      
-      if (xmlHttp.readyState == 4 && xmlHttp.status == 502) {
-        $("#trades-list").empty();
-        $("#trades-list").append($("<li class='list-group-item'></li>").text("Bad Gateway"));
-      }
-      //$("#trades-list").append($("<li class='list-group-item'></li>").text(xmlHttp.responseText));
-        //return xmlHttp.responseText;
-      // else
-      //   return null;
+    }
+    /* Bad gateway 502 error*/
+    if (xmlHttp.readyState == 4 && xmlHttp.status == 502) {
+      $("#trades-list").empty();
+      $("#trades-list").append($("<li class='list-group-item'></li>").text("502 Bad Gateway"));
+    }
   }
   xmlHttp.open("GET", theUrl, true); // true for asynchronous 
   xmlHttp.send(null);
