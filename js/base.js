@@ -1,6 +1,7 @@
 // в цьому файлі описані скрипти
 //
 
+//do when document loaded
 $(document).ready(function(){
   $("#button1").click( function(){
     $("#trades-list").empty();
@@ -10,6 +11,7 @@ $(document).ready(function(){
     getreq("https://btc-trade.com.ua/api/deals/btc_uah");
   });
 });
+//get 
 function getreq(theUrl) {
   var xmlHttp = new XMLHttpRequest();
   xmlHttp.onreadystatechange = function() {
@@ -20,8 +22,9 @@ function getreq(theUrl) {
             tradesObj;
         trades = JSON.parse(xmlHttp.responseText);
         $("#trades-list").empty();
-
-        $("#trades-list").append($("<li class='list-group-item'></li>").text(trades[0].user));
+        trades.forEach(tradesListOut); 
+  
+        
       }
     }
     /* Bad gateway 502 error*/
@@ -33,10 +36,26 @@ function getreq(theUrl) {
   xmlHttp.open("GET", theUrl, true); // true for asynchronous 
   xmlHttp.send(null);
 }
-//
-function dojson(jsonreq) {
-  document.getElementById("demo").innerHTML = jsonreq;
+//list of trades function
+function tradesListOut(item, index) {
+  var txt;
+  var clr;
+  txt = "<tr><th scope='row'>" + item.pub_date + "</th>";
+  txt += "<td>" + item.user + "</td>";
+  if(item.type=="buy") {
+    clr = "text-success";
+  }
+  else {
+    clr = "text-danger";
+  }
+  txt += "<td class='" + clr + "'>" + item.type + "</td>";
+  txt += "<td>" + item.price + "</td>";
+  txt += "<td>" + item.amnt_base + "</td>";
+  txt += "<td>" + item.amnt_trade + "</td>";
+  txt += '</tr>';
+  $("#trades-list").append(txt);
 }
+
 // Get the modal
 var modal = document.getElementById('loginForm');
 // Get the link that opens the modal

@@ -17,16 +17,37 @@
       <h2>Бот для BTC TRADE UA</h2>
     </header>
     <main>
-      <ul class="list-group" id="trades-list">
-        <li class="list-group-item">Test</li>
-      </ul>
-      <button type="button" class="btn btn-primary" id="button1">Click Me!</button>
+    <!-- table of last trades -->
+
+    <div class="container">
+      <div class="table-caption">List of trades</div>
+      <table class="table table-striped">
+        <caption>List of trades</caption>
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Дата</th>
+            <th scope="col">Юзер</th>
+            <th scope="col">Тип</th>
+            <th scope="col">Ціна</th>
+            <th scope="col">Сума UAH</th>
+            <th scope="col">Сума BTC</th>
+          </tr>
+        </thead>
+        
+        <tbody id="trades-list">
+          <tr>
+            <th scope="row">Test</th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+      
+    <button type="button" class="btn btn-primary" id="button1">Click Me!</button>
 
     </main>
     <footer>
       
     </footer>
-    
     
     <!-- for bootstrap  -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
